@@ -13,8 +13,10 @@ CODEFILES := $(addsuffix /*,$(STRUCTURE))
 CODEFILES := $(wildcard $(CODEFILES))   
 SRCFILES := $(filter %.cc,$(CODEFILES))
 OBJFILES := $(subst $(SRCDIR),$(OBJDIR),$(SRCFILES:%.cc=%.o)) 
+OBJFILES := $(OBJFILES) $(OBJDIR)/telemetry.pb.o $(OBJDIR)/telemetry.grpc.pb.o
 INCFILES := $(filter %.h,$(CODEFILES)) 
 INCFILES := $(subst ./src/gen-ipv6-nd-cpp/,,$(INCFILES))
+INCFILES := $(INCFILES) telemetry.pb.h telemetry.grpc.pb.h
 print-%  : ; @echo $* = $($*)
 
 .PHONY: all
@@ -29,11 +31,11 @@ $(TARGET_LIB): $(OBJFILES)
 	ranlib $(TARGET_LIB)
         
 .PHONY: install
-install:
+install::
 	mkdir -p $(INCLUDEDIR)
 	cp -p $(TARGET_LIB) $(LIBDIR)
 	cd $(SRCDIR);cp -p --parents $(INCFILES) $(INCLUDEDIR)
 
 .PHONY: clean
 clean:
-	-${RM} ${TARGET_LIB} ${INCLUDEDIR} ${OBJDIR}
+	-${RM} ${TARGET_LIB} ${INCLUDEDIR} src/

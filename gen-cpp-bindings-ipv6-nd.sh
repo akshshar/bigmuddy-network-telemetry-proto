@@ -4,6 +4,15 @@
 # All rights reserved.
 #
 set -x
+
+if [ -d src/gen-ipv6-nd-obj ]; then
+  rm -r src/gen-ipv6-nd-obj
+fi
+
+if [ -d src/gen-ipv6-nd-cpp ]; then
+  rm -r src/gen-ipv6-nd-cpp
+fi
+
 mkdir -p src/gen-ipv6-nd-cpp
 mkdir -p src/gen-ipv6-nd-obj
 printf "Generating cplusplus bindings..."
